@@ -1,0 +1,35 @@
+{
+  "name": "anythingllm-pipedream-integration",
+  "version": "1.0.0",
+  "description": "Pipedream workflow integration plugin for AnythingLLM - Connect to 1000+ APIs and services",
+  "main": "handler.js",
+  "keywords": [
+    "anythingllm",
+    "pipedream",
+    "workflow",
+    "automation",
+    "integration",
+    "api",
+    "agent-skill",
+    "webhooks",
+    "serverless"
+  ],
+  "author": "AnythingLLM Community",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anlaklab/anything-llm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/anlaklab/anything-llm/issues"
+  },
+  "homepage": "https://github.com/anlaklab/anything-llm#readme",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

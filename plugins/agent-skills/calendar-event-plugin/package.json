@@ -1,0 +1,29 @@
+{
+  "name": "anythingllm-calendar-event-plugin",
+  "version": "1.0.0",
+  "description": "Calendar event management plugin for AnythingLLM",
+  "main": "handler.js",
+  "keywords": [
+    "anythingllm",
+    "calendar",
+    "events",
+    "agent-skill",
+    "google-calendar",
+    "outlook",
+    "scheduling"
+  ],
+  "author": "AnythingLLM Community",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anlaklab/anything-llm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/anlaklab/anything-llm/issues"
+  }
+}

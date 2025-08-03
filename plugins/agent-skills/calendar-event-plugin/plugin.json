@@ -1,0 +1,158 @@
+{
+  "active": true,
+  "hubId": "calendar-event-plugin",
+  "name": "Calendar Event Manager",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "Create, view, and manage calendar events. Supports Google Calendar, Outlook, and other calendar APIs.",
+  "author": "@anythingllm-community",
+  "author_url": "https://github.com/anlaklab/anything-llm",
+  "license": "MIT",
+  "setup_args": {
+    "CALENDAR_PROVIDER": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "type": "select",
+        "default": "google",
+        "options": [
+          {"value": "google", "label": "Google Calendar"},
+          {"value": "outlook", "label": "Microsoft Outlook"},
+          {"value": "caldav", "label": "CalDAV (Generic)"}
+        ],
+        "placeholder": "Select calendar provider",
+        "hint": "Choose your preferred calendar service"
+      }
+    },
+    "CALENDAR_API_KEY": {
+      "type": "string",
+      "required": false,
+      "input": {
+        "type": "password",
+        "default": "",
+        "placeholder": "Your calendar API key",
+        "hint": "API key for calendar authentication (if required)"
+      }
+    },
+    "CALENDAR_CLIENT_ID": {
+      "type": "string",
+      "required": false,
+      "input": {
+        "type": "text",
+        "default": "",
+        "placeholder": "Client ID",
+        "hint": "OAuth Client ID for calendar access"
+      }
+    },
+    "CALENDAR_CLIENT_SECRET": {
+      "type": "string",
+      "required": false,
+      "input": {
+        "type": "password",
+        "default": "",
+        "placeholder": "Client Secret",
+        "hint": "OAuth Client Secret for calendar access"
+      }
+    },
+    "DEFAULT_CALENDAR_ID": {
+      "type": "string",
+      "required": false,
+      "input": {
+        "type": "text",
+        "default": "primary",
+        "placeholder": "primary",
+        "hint": "Default calendar ID to use (e.g., 'primary' for Google)"
+      }
+    },
+    "TIMEZONE": {
+      "type": "string",
+      "required": false,
+      "input": {
+        "type": "text",
+        "default": "UTC",
+        "placeholder": "UTC",
+        "hint": "Default timezone (e.g., 'America/New_York', 'Europe/London')"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Create a meeting for tomorrow at 2 PM called 'Project Review'",
+      "call": "{\"action\": \"create\", \"title\": \"Project Review\", \"start_time\": \"2024-01-16T14:00:00\", \"duration\": 60}"
+    },
+    {
+      "prompt": "What are my meetings today?",
+      "call": "{\"action\": \"list\", \"date\": \"today\"}"
+    },
+    {
+      "prompt": "Schedule a 30-minute call with John next Monday at 10 AM",
+      "call": "{\"action\": \"create\", \"title\": \"Call with John\", \"start_time\": \"2024-01-22T10:00:00\", \"duration\": 30, \"attendees\": [\"john@example.com\"]}"
+    },
+    {
+      "prompt": "Cancel my 3 PM meeting today",
+      "call": "{\"action\": \"delete\", \"time_filter\": \"2024-01-15T15:00:00\"}"
+    },
+    {
+      "prompt": "Move my 2 PM meeting to 3 PM",
+      "call": "{\"action\": \"update\", \"time_filter\": \"2024-01-15T14:00:00\", \"new_start_time\": \"2024-01-15T15:00:00\"}"
+    }
+  ],
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "action": {
+        "description": "Action to perform: create, list, update, delete, or get_availability",
+        "type": "string"
+      },
+      "title": {
+        "description": "Event title/subject",
+        "type": "string"
+      },
+      "description": {
+        "description": "Event description or notes",
+        "type": "string"
+      },
+      "start_time": {
+        "description": "Event start time in ISO format (e.g., '2024-01-15T14:00:00')",
+        "type": "string"
+      },
+      "end_time": {
+        "description": "Event end time in ISO format (optional if duration is provided)",
+        "type": "string"
+      },
+      "duration": {
+        "description": "Event duration in minutes (alternative to end_time)",
+        "type": "number"
+      },
+      "attendees": {
+        "description": "Array of attendee email addresses",
+        "type": "string"
+      },
+      "location": {
+        "description": "Event location (physical or virtual)",
+        "type": "string"
+      },
+      "date": {
+        "description": "Date for listing events (e.g., 'today', 'tomorrow', '2024-01-15')",
+        "type": "string"
+      },
+      "calendar_id": {
+        "description": "Specific calendar ID (optional, uses default if not provided)",
+        "type": "string"
+      },
+      "time_filter": {
+        "description": "Time filter for finding specific events to update/delete",
+        "type": "string"
+      },
+      "new_start_time": {
+        "description": "New start time when updating an event",
+        "type": "string"
+      },
+      "recurrence": {
+        "description": "Recurrence pattern (daily, weekly, monthly, yearly)",
+        "type": "string"
+      }
+    }
+  },
+  "imported": true
+}

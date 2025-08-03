@@ -1,0 +1,152 @@
+{
+  "active": true,
+  "hubId": "pipedream-integration",
+  "name": "Pipedream Workflow Integration",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "Execute Pipedream workflows and connect to 1000+ APIs. Trigger external actions, process data, and integrate with any service through Pipedream's powerful automation platform.",
+  "author": "@anythingllm-community",
+  "author_url": "https://github.com/anlaklab/anything-llm",
+  "license": "MIT",
+  "setup_args": {
+    "PIPEDREAM_API_KEY": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "type": "password",
+        "default": "",
+        "placeholder": "pd_xxxxxxxxxxxxxxxxxxxxxx",
+        "hint": "Your Pipedream API key from https://pipedream.com/settings/account"
+      }
+    },
+    "DEFAULT_WORKSPACE_ID": {
+      "type": "string",
+      "required": false,
+      "input": {
+        "type": "text",
+        "default": "",
+        "placeholder": "ws_xxxxxxxxxxxxxx",
+        "hint": "Default Pipedream workspace ID (optional)"
+      }
+    },
+    "WORKFLOW_ENDPOINTS": {
+      "type": "string",
+      "required": false,
+      "input": {
+        "type": "textarea",
+        "default": "",
+        "placeholder": "workflow1:https://eo123abc.m.pipedream.net\nworkflow2:https://eo456def.m.pipedream.net",
+        "hint": "Pre-configured workflow endpoints (name:url format, one per line)"
+      }
+    },
+    "DEFAULT_TIMEOUT": {
+      "type": "string",
+      "required": false,
+      "input": {
+        "type": "number",
+        "default": "30",
+        "placeholder": "30",
+        "hint": "Default timeout for workflow execution in seconds"
+      }
+    },
+    "ENABLE_ASYNC_EXECUTION": {
+      "type": "string",
+      "required": false,
+      "input": {
+        "type": "select",
+        "default": "false",
+        "options": [
+          {"value": "true", "label": "Enable Async"},
+          {"value": "false", "label": "Synchronous Only"}
+        ],
+        "hint": "Allow asynchronous workflow execution for long-running tasks"
+      }
+    },
+    "PIPEDREAM_BASE_URL": {
+      "type": "string",
+      "required": false,
+      "input": {
+        "type": "text",
+        "default": "https://api.pipedream.com/v1",
+        "placeholder": "https://api.pipedream.com/v1",
+        "hint": "Pipedream API base URL (usually don't need to change)"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Send a message to Slack using my Pipedream workflow",
+      "call": "{\"action\": \"execute_workflow\", \"workflow_name\": \"slack-notification\", \"data\": {\"message\": \"Hello from AnythingLLM!\", \"channel\": \"#general\"}}"
+    },
+    {
+      "prompt": "Trigger my email automation workflow with customer data",
+      "call": "{\"action\": \"execute_workflow\", \"workflow_url\": \"https://eo123abc.m.pipedream.net\", \"data\": {\"customer_email\": \"john@example.com\", \"name\": \"John Doe\"}}"
+    },
+    {
+      "prompt": "List all my Pipedream workflows",
+      "call": "{\"action\": \"list_workflows\"}"
+    },
+    {
+      "prompt": "Get the status of my data processing workflow",
+      "call": "{\"action\": \"get_workflow_status\", \"workflow_id\": \"wf_abc123\"}"
+    },
+    {
+      "prompt": "Execute my Twitter posting workflow with new content",
+      "call": "{\"action\": \"execute_workflow\", \"workflow_name\": \"twitter-post\", \"data\": {\"tweet_text\": \"Exciting news from our AI project!\", \"include_image\": false}}"
+    },
+    {
+      "prompt": "Run my database backup workflow",
+      "call": "{\"action\": \"execute_workflow\", \"workflow_name\": \"db-backup\", \"async\": true}"
+    }
+  ],
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "action": {
+        "description": "Action to perform: execute_workflow, list_workflows, get_workflow_status, create_webhook",
+        "type": "string"
+      },
+      "workflow_name": {
+        "description": "Name of the pre-configured workflow to execute",
+        "type": "string"
+      },
+      "workflow_url": {
+        "description": "Direct URL of the Pipedream workflow endpoint",
+        "type": "string"
+      },
+      "workflow_id": {
+        "description": "Pipedream workflow ID for status checking",
+        "type": "string"
+      },
+      "data": {
+        "description": "Data payload to send to the workflow (JSON object as string)",
+        "type": "string"
+      },
+      "headers": {
+        "description": "Custom headers for the workflow request (JSON object as string)",
+        "type": "string"
+      },
+      "method": {
+        "description": "HTTP method for the workflow request (GET, POST, PUT, DELETE)",
+        "type": "string"
+      },
+      "async": {
+        "description": "Execute workflow asynchronously (true/false)",
+        "type": "string"
+      },
+      "timeout": {
+        "description": "Custom timeout for this workflow execution in seconds",
+        "type": "number"
+      },
+      "webhook_name": {
+        "description": "Name for creating a new webhook",
+        "type": "string"
+      },
+      "event_type": {
+        "description": "Type of event to trigger the webhook",
+        "type": "string"
+      }
+    }
+  },
+  "imported": true
+}
