@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  anythingllm:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      args:
+        ARG_UID: ${UID:-1000}
+        ARG_GID: ${GID:-1000}
+    container_name: anythingllm
+    restart: unless-stopped
+    cap_add:
+      - SYS_ADMIN
+    ports:
+      - "${PORT:-3001}:3001"
+    volumes:
+      # Persistent storage volumes for Coolify
+      - anythingllm_storage:/app/server/storage
+      - anythingllm_hotdir:/app/collector/hotdir
+      - anythingllm_outputs:/app/collector/outputs
+    environment:
+      # Basic Configuration
+      - SERVER_PORT=3001
+      - NODE_ENV=production
+      - ANYTHING_LLM_RUNTIME=docker
+      - DEPLOYMENT_VERSION=1.8.4
+      
+      # Storage Configuration (Critical for Coolify)
+      - STORAGE_DIR=/app/server/storage
+      
+      # Security Configuration (Replace with secure values in production)
+      - JWT_SECRET=${JWT_SECRET:-your-secure-jwt-secret-key-minimum-12-chars}
+      - SIG_KEY=${SIG_KEY:-your-secure-signature-key-minimum-32-chars}
+      - SIG_SALT=${SIG_SALT:-your-secure-salt-minimum-32-chars}
+      
+      # Database Configuration
+      - DATABASE_CONNECTION_STRING=${DATABASE_CONNECTION_STRING:-}
+      
+      # LLM Configuration (Configure as needed)
+      - LLM_PROVIDER=${LLM_PROVIDER:-}
+      - OPEN_AI_KEY=${OPEN_AI_KEY:-}
+      - OPEN_MODEL_PREF=${OPEN_MODEL_PREF:-gpt-4o}
+      
+      # Embedding Configuration
+      - EMBEDDING_ENGINE=${EMBEDDING_ENGINE:-native}
+      - EMBEDDING_BASE_PATH=${EMBEDDING_BASE_PATH:-}
+      - EMBEDDING_MODEL_PREF=${EMBEDDING_MODEL_PREF:-}
+      
+      # Vector Database Configuration
+      - VECTOR_DB=${VECTOR_DB:-lancedb}
+      - PINECONE_API_KEY=${PINECONE_API_KEY:-}
+      - PINECONE_INDEX=${PINECONE_INDEX:-}
+      - CHROMA_ENDPOINT=${CHROMA_ENDPOINT:-}
+      - WEAVIATE_ENDPOINT=${WEAVIATE_ENDPOINT:-}
+      - QDRANT_ENDPOINT=${QDRANT_ENDPOINT:-}
+      
+      # Telemetry (disable for privacy)
+      - DISABLE_TELEMETRY=${DISABLE_TELEMETRY:-true}
+      
+      # File Upload Settings
+      - COLLECTOR_HOTDIR=/app/collector/hotdir
+      - COLLECTOR_OUTPUTS=/app/collector/outputs
+      
+      # Additional Security Settings
+      - INNGEST_EVENT_KEY=${INNGEST_EVENT_KEY:-}
+      - INNGEST_SIGNING_KEY=${INNGEST_SIGNING_KEY:-}
+      
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "/bin/bash", "/usr/local/bin/docker-healthcheck.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  anythingllm_storage:
+    driver: local
+  anythingllm_hotdir:
+    driver: local
+  anythingllm_outputs:
+    driver: local
+
+networks:
+  default:
+    name: anythingllm_network
