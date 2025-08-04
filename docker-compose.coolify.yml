@@ -66,6 +66,13 @@ services:
       - INNGEST_EVENT_KEY=${INNGEST_EVENT_KEY:-}
       - INNGEST_SIGNING_KEY=${INNGEST_SIGNING_KEY:-}
       
+      # Pipedream MCP Integration
+      - PIPEDREAM_CLIENT_ID=${PIPEDREAM_CLIENT_ID:-}
+      - PIPEDREAM_CLIENT_SECRET=${PIPEDREAM_CLIENT_SECRET:-}
+      - PIPEDREAM_PROJECT_ID=${PIPEDREAM_PROJECT_ID:-}
+      - PIPEDREAM_PROJECT_ENVIRONMENT=${PIPEDREAM_PROJECT_ENVIRONMENT:-production}
+      - PIPEDREAM_OAUTH_REDIRECT_URI=${PIPEDREAM_OAUTH_REDIRECT_URI:-http://localhost:3001/api/oauth/pipedream/callback}
+      
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
